@@ -1,0 +1,30 @@
+{
+  "name": "react-webengage",
+  "version": "1.0.0",
+  "description": "reactjs webengage",
+  "main": "dist/index.js",
+  "typings": "src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webengage",
+    "reactjs",
+    "webenage"
+  ],
+  "author": "Ali Bakhshi Ilani",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.22.5",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "typescript": "^5.1.6"
+  }
+}
