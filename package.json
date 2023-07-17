@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "reactjs webengage",
   "main": "dist/index.js",
-  "typings": "src/index.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],

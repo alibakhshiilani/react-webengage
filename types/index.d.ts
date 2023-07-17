@@ -1,4 +1,5 @@
-import { ReactWebengageInterface, ReactWebengageProps } from "./ReactWebengage";
+import { ReactWebengageInterface, ReactWebengageProps } from "../dist/types/ReactWebengage";
+
 
 declare class ReactWebengage {
     constructor(props: ReactWebengageProps);
