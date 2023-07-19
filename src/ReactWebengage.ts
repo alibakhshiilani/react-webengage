@@ -8,7 +8,7 @@ declare global {
         logout: VoidFunction
       }
       track: (eventName: string, eventAttributes?: any) => void
-      onReady: (callback: VoidFunction) => void
+      reload: VoidFunction;
     }
   }
 }
@@ -19,7 +19,7 @@ export interface ReactWebengageInterface {
   setAttribute: (key: string, value: object) => void;
   addTrack: any;
   logout: () => void;
-  onReady: (callback: () => void) => void;
+  reload: () => boolean;
 }
 
 export interface ReactWebengageProps {
@@ -35,6 +35,7 @@ class ReactWebengage implements ReactWebengageInterface {
   constructor(props:ReactWebengageProps){
     this.is_spa = props.is_spa || true
     this.licence = props.licence;
+    this.reload.bind(this)
   }
 
   init(w:any = window, e:any = document, b:string = 'webengage') {
@@ -57,7 +58,7 @@ class ReactWebengage implements ReactWebengageInterface {
         w[b] = r =
           {
             __queue: [],
-            is_spa: this.is_spa ? 1 : 0,
+            is_spa: 0, // original spa will make window.history.replace crash , we used spaSupport method instead
             __v: '6.0',
             user: {},
           },
@@ -88,17 +89,27 @@ class ReactWebengage implements ReactWebengageInterface {
 
   
     if(this.is_spa){
-      window.webengage.onReady(() => {
-        const webengageHistoryReplace = window.history.replaceState
-  
-        window.history.replaceState = (...args) => {
-          webengageHistoryReplace(...args)
-          Object.getPrototypeOf(window.history).replaceState.apply(window.history, args)
-        }
-      })
+      this.spaSupport()
     }
   }
 
+  private spaSupport() {
+    window.history.pushState = function pushState(...args) {
+      window.dispatchEvent(new Event('locationchange'))
+      return Object.getPrototypeOf(window.history).pushState.apply(window.history, args)
+    }
+
+    window.history.replaceState = function replaceState(...args) {
+      window.dispatchEvent(new Event('locationchange'))
+      return Object.getPrototypeOf(window.history).replaceState.apply(window.history, args)
+    }
+
+    window.addEventListener('popstate', () => {
+      window.dispatchEvent(new Event('locationchange'))
+    })
+
+    window.addEventListener('locationchange', this.reload)
+  }
 
   login(id:string){
     window.webengage.user.login(id);
@@ -116,10 +127,14 @@ class ReactWebengage implements ReactWebengageInterface {
     window.webengage.user.logout()
   }
 
-  onReady(callback:VoidFunction){
-    window.webengage.onReady(()=>{
-      callback()
-    })
+  reload(){
+    if(window?.webengage?.reload){
+      setTimeout(function () {
+        window?.webengage?.reload()
+      }, 500)
+      return true;
+    }
+    return false;
   }
 
 }
