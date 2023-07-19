@@ -17,7 +17,7 @@ or
 To use the library, import the `ReactWebengage` class from the package and create an instance with your WebEngage licence key and other optional props:
 
 ```javascript
-import ReactWebengage from 'react-webengage-sdk';
+import ReactWebengage from 'react-webengage';
 
 const webengage = new ReactWebengage({
   licence: 'your-webengage-licence-key',
