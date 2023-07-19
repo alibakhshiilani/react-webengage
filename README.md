@@ -6,6 +6,11 @@ A TypeScript/JavaScript library for integrating the WebEngage SDK in React appli
 
 To install the library, run the following command:
 
+```npm i react-webengage```
+
+or
+
+```yarn add react-webengage```
 
 ## Usage
 
