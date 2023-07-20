@@ -1,5 +1,2 @@
-*.config.js
-*.config.ts
-*.test.js
-*.test.ts
+node_modules
 dist

@@ -1,5 +1,7 @@
 import { ReactWebengage } from '../src/index'
 
-test('reload', () => {
-  expect(new ReactWebengage({licence:"licence"})).toBe(Boolean)
+test('init', () => {
+  const reactWebengage = new ReactWebengage({ licence: 'licence' })
+  reactWebengage.init()
+  expect(window.webengage).toBeDefined()
 })

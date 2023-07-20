@@ -1,6 +1,6 @@
 {
   "name": "react-webengage",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "reactjs webengage",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
