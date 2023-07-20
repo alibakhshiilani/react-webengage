@@ -1,9 +1,11 @@
 {
   "name": "react-webengage",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "reactjs webengage",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "umd:main": "dist/umd/index.js",
+  "types": "dist/types/index.d.js",
   "files": [
     "dist"
   ],
