@@ -1,3 +1,3 @@
-import ReactWebengage from './ReactWebengage';
+import ReactWebengage from './ReactWebengage'
 
 export { ReactWebengage }

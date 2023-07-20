@@ -2,44 +2,43 @@ declare global {
   interface Window {
     webengage: {
       init: (id: string) => void
-      user:{
+      user: {
         login: (username: string) => {}
         setAttribute: (key: string, value: Object) => {}
         logout: VoidFunction
       }
       track: (eventName: string, eventAttributes?: any) => void
-      reload: VoidFunction;
+      reload: VoidFunction
     }
   }
 }
 
 export interface ReactWebengageInterface {
-  init: any;
-  login: (id: string) => void;
-  setAttribute: (key: string, value: object) => void;
-  addTrack: any;
-  logout: () => void;
-  reload: () => boolean;
+  init: any
+  login: (id: string) => void
+  setAttribute: (key: string, value: object) => void
+  addTrack: any
+  logout: () => void
+  reload: () => boolean
 }
 
 export interface ReactWebengageProps {
-  licence: string;
-  is_spa?: boolean;
+  licence: string
+  is_spa?: boolean
 }
 
 class ReactWebengage implements ReactWebengageInterface {
+  private licence: string
+  private is_spa: boolean
 
-  private licence:string
-  private is_spa:boolean
-
-  constructor(props:ReactWebengageProps){
+  constructor(props: ReactWebengageProps) {
     this.is_spa = props.is_spa || true
-    this.licence = props.licence;
+    this.licence = props.licence
     this.reload.bind(this)
   }
 
-  init(w:any = window, e:any = document, b:string = 'webengage') {
-    function o(e:any, t:any) {
+  init(w: any = window, e: any = document, b: string = 'webengage') {
+    function o(e: any, t: any) {
       e[t[t.length - 1]] = function () {
         r.__queue.push([t.join('.'), arguments])
       }
@@ -81,14 +80,13 @@ class ReactWebengage implements ReactWebengageInterface {
             ('https:' == e.location.protocol
               ? 'https://widgets.ir0.webengage.com'
               : 'http://widgets.ir0.webengage.com') + '/js/webengage-min-v-6.0.js'),
-          //@ts-ignore    
+          //@ts-ignore
           d.parentNode.insertBefore(f, d)
       })
     }
     window.webengage.init(this.licence)
 
-  
-    if(this.is_spa){
+    if (this.is_spa) {
       this.spaSupport()
     }
   }
@@ -111,32 +109,31 @@ class ReactWebengage implements ReactWebengageInterface {
     window.addEventListener('locationchange', this.reload)
   }
 
-  login(id:string){
-    window.webengage.user.login(id);
+  login(id: string) {
+    window.webengage.user.login(id)
   }
 
-  addTrack(eventName:string,eventData:any){
-    window.webengage.track(eventName, [eventData]);
+  addTrack(eventName: string, eventData: any) {
+    window.webengage.track(eventName, [eventData])
   }
 
-  setAttribute(key: string, value: Object){
-    window.webengage.user.setAttribute(key,value)
+  setAttribute(key: string, value: Object) {
+    window.webengage.user.setAttribute(key, value)
   }
 
-  logout(){
+  logout() {
     window.webengage.user.logout()
   }
 
-  reload(){
-    if(window?.webengage?.reload){
+  reload() {
+    if (window?.webengage?.reload) {
       setTimeout(function () {
         window?.webengage?.reload()
       }, 500)
-      return true;
+      return true
     }
-    return false;
+    return false
   }
-
 }
 
-export default ReactWebengage;
+export default ReactWebengage
