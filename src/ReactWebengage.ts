@@ -24,7 +24,7 @@ export interface ReactWebengageInterface {
 
 export interface ReactWebengageProps {
   licence: string;
-  is_spa: boolean;
+  is_spa?: boolean;
 }
 
 class ReactWebengage implements ReactWebengageInterface {

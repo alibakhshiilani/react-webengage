@@ -1,1 +1,3 @@
-export { default as ReactWebengage } from './ReactWebengage';
+import ReactWebengage from './ReactWebengage';
+
+export { ReactWebengage }

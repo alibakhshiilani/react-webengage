@@ -42,7 +42,7 @@ For more details on the available methods and their arguments, refer to the docu
 
 ## API
 
-## ReactWebengageInterface
+ReactWebengageInterface
 
 This is the interface for the ReactWebengage class.
 
