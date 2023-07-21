@@ -1,25 +1,15 @@
-declare global {
-  interface Window {
-    webengage: {
-      init: (id: string) => void
-      user: {
-        login: (username: string) => {}
-        setAttribute: (key: string, value: Object) => {}
-        logout: VoidFunction
-      }
-      track: (eventName: string, eventAttributes?: any) => void
-      reload: VoidFunction
-    }
-  }
-}
+import ReactWebengageNotification, { ReactWebengageNotificationInterface } from './ReactWebengageNotification'
+import ReactWebengageWebpush, { ReactWebengageWebpushInterface } from './ReactWebengageWebpush'
 
 export interface ReactWebengageInterface {
   init: any
+  options: (key: string, value: any) => void
   login: (id: string) => void
   setAttribute: (key: string, value: object) => void
   addTrack: any
   logout: () => void
   reload: () => boolean
+  onReady: (callback: VoidFunction) => void
 }
 
 export interface ReactWebengageProps {
@@ -27,14 +17,64 @@ export interface ReactWebengageProps {
   is_spa?: boolean
 }
 
+declare global {
+  interface Window {
+    webengage: {
+      init: (id: string) => void
+      onSessionStarted: (callback: Function) => void
+      options: (key: string, value: any) => void
+      user: {
+        login: (username: string) => {}
+        setAttribute: (key: string, value: Object) => {}
+        logout: VoidFunction
+      }
+      feedback: {
+        onClose: (callback: (data: any) => void) => void
+        onSubmit: (callback: (data: any) => void) => void
+        onOpen: (callback: (data: any) => void) => void
+      }
+      webpush: {
+        prompt: Function
+        subscribe: Function
+        isSubscribed: () => boolean
+        isPushNotificationsSupported: (callback: (supported: boolean) => void) => void
+        onSubscribe: (callback: VoidFunction) => void
+      }
+      notification: {
+        render: Function
+        options: (key: string, value: any) => void
+        onClose: (callback: (data: any) => void) => void
+        onOpen: (callback: (data: any) => void) => void
+        onClick: (callback: (data: any) => void) => void
+        clear: Function
+      }
+      survey: {
+        render: Function
+        options: (key: string, value: any) => void
+        onClose: (callback: (data: any) => void) => void
+        onOpen: (callback: (data: any) => void) => void
+        onSubmit: (callback: (data: any) => void) => void
+        onComplete: (callback: (data: any) => void) => void
+        clear: Function
+      }
+      track: (eventName: string, eventAttributes?: any) => void
+      reload: VoidFunction
+      onReady: (callback: VoidFunction) => void
+    }
+  }
+}
+
 class ReactWebengage implements ReactWebengageInterface {
   private licence: string
   private is_spa: boolean
+  public webpush: ReactWebengageWebpushInterface
+  public notification: ReactWebengageNotificationInterface
 
   constructor(props: ReactWebengageProps) {
     this.is_spa = props.is_spa || true
     this.licence = props.licence
-    this.reload.bind(this)
+    this.webpush = new ReactWebengageWebpush()
+    this.notification = new ReactWebengageNotification()
   }
 
   init(w: any = window, e: any = document, b: string = 'webengage') {
@@ -91,6 +131,14 @@ class ReactWebengage implements ReactWebengageInterface {
     }
   }
 
+  onSessionStarted(callback: Function) {
+    window.webengage.onSessionStarted(callback)
+  }
+
+  options(key: string, value: any) {
+    window.webengage.options(key, value)
+  }
+
   private spaSupport() {
     window.history.pushState = function pushState(...args) {
       window.dispatchEvent(new Event('locationchange'))
@@ -123,6 +171,12 @@ class ReactWebengage implements ReactWebengageInterface {
 
   logout() {
     window.webengage.user.logout()
+  }
+
+  onReady(callback: VoidFunction) {
+    window.webengage.onReady(function () {
+      callback()
+    })
   }
 
   reload() {
