@@ -1,4 +1,6 @@
+import ReactWebengageFeedback, { ReactWebengageFeedbackInterface } from './ReactWebengageFeedback'
 import ReactWebengageNotification, { ReactWebengageNotificationInterface } from './ReactWebengageNotification'
+import ReactWebengageSurvey, { ReactWebengageSurveyInterface } from './ReactWebengageSurvey'
 import ReactWebengageWebpush, { ReactWebengageWebpushInterface } from './ReactWebengageWebpush'
 
 export interface ReactWebengageInterface {
@@ -69,12 +71,16 @@ class ReactWebengage implements ReactWebengageInterface {
   private is_spa: boolean
   public webpush: ReactWebengageWebpushInterface
   public notification: ReactWebengageNotificationInterface
+  public survey: ReactWebengageSurveyInterface
+  public feedback: ReactWebengageFeedbackInterface
 
   constructor(props: ReactWebengageProps) {
     this.is_spa = props.is_spa || true
     this.licence = props.licence
     this.webpush = new ReactWebengageWebpush()
     this.notification = new ReactWebengageNotification()
+    this.survey = new ReactWebengageSurvey()
+    this.feedback = new ReactWebengageFeedback()
   }
 
   init(w: any = window, e: any = document, b: string = 'webengage') {
@@ -112,8 +118,8 @@ class ReactWebengage implements ReactWebengageInterface {
       }
       for (i = 0; i < u.length; i++) o(r.user, ['user', u[i]])
       setTimeout(function () {
-        var f = e.createElement('script'),
-          d = e.getElementById('_webengage_script_tag')
+        var f = e.createElement('script')
+        // d = e.getElementById('_webengage_script_tag')
         ;(f.type = 'text/javascript'),
           (f.async = !0),
           (f.src =
@@ -121,7 +127,8 @@ class ReactWebengage implements ReactWebengageInterface {
               ? 'https://widgets.ir0.webengage.com'
               : 'http://widgets.ir0.webengage.com') + '/js/webengage-min-v-6.0.js'),
           //@ts-ignore
-          d.parentNode.insertBefore(f, d)
+          // d.parentNode.insertBefore(f, d)
+          document.body.appendChild(f)
       })
     }
     window.webengage.init(this.licence)
